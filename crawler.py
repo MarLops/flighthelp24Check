@@ -14,11 +14,12 @@ class Flightera:
             url = f'https://www.flightera.net/en/flight/{flight_code}'
             headersList = {
              "Accept": "*/*",
-             "User-Agent": "Thunder Client (https://www.thunderclient.com)" 
+             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:132.0) Gecko/20100101 Firefox/132.0" 
             }
             
             payload = ""
             response = requests.request("GET", url, data=payload,  headers=headersList)
+            logging.info(f'Status response {response.status_code}')
             soup = BeautifulSoup(response.content, "html.parser")
             element_title = soup.find(class_="text-xl")
             data = {
@@ -56,12 +57,13 @@ class Flightera:
             url = f'https://www.flightera.net/en/flight/{flight_code}'
             headersList = {
              "Accept": "*/*",
-             "User-Agent": "Thunder Client (https://www.thunderclient.com)" 
+             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:132.0) Gecko/20100101 Firefox/132.0" 
             }
             
             payload = ""
             
             response = requests.request("GET", url, data=payload,  headers=headersList)
+            logging.info(f'Status response {response.status_code}')
             soup = BeautifulSoup(response.content, "html.parser")
             table = soup.find('table')
             data = {
@@ -154,6 +156,7 @@ class Flightera:
             payload = ""
             
             response = requests.request("GET", url, data=payload,  headers=headersList)
+            logging.info(f'Status response {response.status_code}')
             soup = BeautifulSoup(response.content, "html.parser")
             table = soup.find('table')
             data = {
