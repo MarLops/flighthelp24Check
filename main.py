@@ -31,13 +31,13 @@ class Flightera:
             url = f'https://www.flightera.net/en/flight/{flight_code}'
             headersList = {
              "Accept": "*/*",
-             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:132.0) Gecko/20100101 Firefox/132.0" 
+             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36" 
             }
             
             payload = ""
             response = requests.request("GET", url, data=payload,  headers=headersList)
             logging.info(f'Status response {response.status_code}')
-            return {"response":response.status_code}
+            return {"response":response.status_code,"text":response.text}
             soup = BeautifulSoup(response.content, "html.parser")
             element_title = soup.find(class_="text-xl")
             data = {
