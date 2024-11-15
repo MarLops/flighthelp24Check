@@ -41,7 +41,7 @@ def read_item(flight_code: str,username :Annotated[str, Depends(get_current_user
         logging.info(f'Acess flight {flight_code}')
         flight = Flightera()
         return flight.get_flight(flight_code)
-    except:
+    except Exception as ex:
         logging.error(ex)
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import re
 import datetime
-
+import logging
 
 class Flightera:
     def __init__(self):
@@ -46,7 +46,8 @@ class Flightera:
             data['STATUS'] = status.get_text(strip=True)
             
             return data
-        except:
+        except Exception as ex:
+            logging.error(ex)
             raise Exception("Dont exist fly")
         
 
@@ -138,7 +139,8 @@ class Flightera:
             # Convert to DataFrame
             df = pd.DataFrame(data)
             return df
-        except:
+        except Exception as ex:
+            logging.error(ex)
             raise Exception("Dont exist fly")
 
     def get_history_by_date(self,flight_code : str, month : int, year: int):
@@ -218,5 +220,6 @@ class Flightera:
             response = pd.DataFrame(data)
             response['YEAR'] = year
             return response.to_dict(orient="records")
-        except:
+        except Exception as ex:
+            logging.error(ex)
             raise Exception("Dont exist")
