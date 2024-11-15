@@ -16,6 +16,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import re
 import datetime
+import time
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -37,6 +38,8 @@ class Flightera:
             payload = ""
             response = requests.request("GET", url, data=payload,  headers=headersList)
             logging.info(f'Status response {response.status_code}')
+            time.sleep(5)
+            response = requests.request("GET", url, data=payload,  headers=headersList)
             return {"response":response.status_code,"text":response.text}
             soup = BeautifulSoup(response.content, "html.parser")
             element_title = soup.find(class_="text-xl")
