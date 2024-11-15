@@ -4,7 +4,7 @@ import os
 from fastapi import Depends, FastAPI, HTTPException, status,Query
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from crawler import Flightera
-
+import logging
 
 USERNAME = os.getenv('FLIGHTHELP24USER', 'default_value')
 PASSWORD = os.getenv('FLIGHTHELP24PASS', 'default_value')
@@ -38,9 +38,11 @@ async def root():
 @app.get("/flight/{flight_code}")
 def read_item(flight_code: str,username :Annotated[str, Depends(get_current_username)]):
     try:
+        logging.info(f'Acess flight {flight_code}')
         flight = Flightera()
         return flight.get_flight(flight_code)
     except:
+        logging.error(ex)
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Flight dont exsit",
@@ -56,11 +58,13 @@ def read_item_new(username :Annotated[str, Depends(get_current_username)],
     Get details of the flight in the specific month and year
     """
     try:
+        logging.info(f'Acess flight {flight_code}')
         flight = Flightera()
         response = flight.get_history_by_date(flight_code,month_number,year)
         return response
-    except:
+    except Exception as ex:
+        logging.error(ex)
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Flight dont exsit",
+            detail=str(ex)
         )
