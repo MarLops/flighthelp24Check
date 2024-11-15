@@ -1,10 +1,10 @@
 from typing import Optional
 from typing import Annotated
-
-from fastapi import Depends, FastAPI, HTTPException, status
-from fastapi.security import HTTPBasic, HTTPBasicCredentials
-
 import os
+from fastapi import Depends, FastAPI, HTTPException, status,Query
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from crawler import Flightera
+
 
 USERNAME = os.getenv('FLIGHTHELP24USER', 'default_value')
 PASSWORD = os.getenv('FLIGHTHELP24PASS', 'default_value')
@@ -35,11 +35,32 @@ def get_current_username(
 async def root():
     return {"message": "Hello World"}
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Optional[str] = None):
-    return {"item_id": item_id, "q": q}
+@app.get("/flight/{flight_code}")
+def read_item(flight_code: str,username :Annotated[str, Depends(get_current_username)]):
+    try:
+        flight = Flightera()
+        return flight.get_flight(flight_code)
+    except:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Flight dont exsit",
+        )
 
 
-@app.get("/items_new/{item_id}")
-def read_item_new(username :Annotated[str, Depends(get_current_username)],item_id: int, q: Optional[str] = None):
-    return {"item_id": item_id, "q": q}
+@app.get("/flight_month")
+def read_item_new(username :Annotated[str, Depends(get_current_username)],
+                  flight_code: str,
+                  month_number: int = Query(1,description="Number of the month. Janury = 1, and so on"),
+                  year: int = 2023):
+    """
+    Get details of the flight in the specific month and year
+    """
+    try:
+        flight = Flightera()
+        response = flight.get_history_by_date(flight_code,month_number,year)
+        return response
+    except:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Flight dont exsit",
+        )

@@ -1,1 +1,4 @@
 fastapi[all]
+requests
+beautifulsoup4
+pandas
