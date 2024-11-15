@@ -37,6 +37,7 @@ class Flightera:
             payload = ""
             response = requests.request("GET", url, data=payload,  headers=headersList)
             logging.info(f'Status response {response.status_code}')
+            return {"response":response.status_code}
             soup = BeautifulSoup(response.content, "html.parser")
             element_title = soup.find(class_="text-xl")
             data = {
