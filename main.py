@@ -31,7 +31,7 @@ def get_current_username(
         )
     return credentials.username
 
-@app.get("/")
+@app.get("/healthz")
 async def root():
     return {"message": "Hello World"}
 
