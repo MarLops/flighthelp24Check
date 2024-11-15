@@ -16,7 +16,11 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import re
 import datetime
-import logging
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s - %(levelname)s - %(message)s - Line: %(lineno)d"
+)
 
 class Flightera:
     def __init__(self):
@@ -271,7 +275,8 @@ def read_item(flight_code: str,username :Annotated[str, Depends(get_current_user
     try:
         logging.info(f'Acess flight {flight_code}')
         flight = Flightera()
-        return flight.get_flight(flight_code)
+        response = flight.get_flight(flight_code)
+        return response
     except Exception as ex:
         logging.error(ex)
         raise HTTPException(
@@ -279,6 +284,9 @@ def read_item(flight_code: str,username :Annotated[str, Depends(get_current_user
             detail="Flight dont exsit",
         )
 
+@app.get("/auth_test")
+def get_username(username :Annotated[str, Depends(get_current_username)]):
+    return username
 
 @app.get("/flight_month")
 def read_item_new(username :Annotated[str, Depends(get_current_username)],
