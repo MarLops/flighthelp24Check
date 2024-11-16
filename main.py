@@ -31,16 +31,21 @@ class Flightera:
         try:
             url = f'https://www.flightera.net/en/flight/{flight_code}'
             headersList = {
-             "Accept": "*/*",
-             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36" 
+             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+            "Accept-Language": "en-US,en;q=0.5",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:115.0) Gecko/20100101 Firefox/115.0",
+            "Referer": "https://www.google.com/",
+            "Connection": "keep-alive"
+            }
+
+            proxies = {
+                "http": "http://45.77.201.91:3128",  # Replace with a working free proxy
+                "https": "http://45.77.201.91:3128", # Replace with a working free proxy
             }
             
             payload = ""
             response = requests.request("GET", url, data=payload,  headers=headersList)
             logging.info(f'Status response {response.status_code}')
-            time.sleep(5)
-            response = requests.request("GET", url, data=payload,  headers=headersList)
-            return {"response":response.status_code,"text":response.text}
             soup = BeautifulSoup(response.content, "html.parser")
             element_title = soup.find(class_="text-xl")
             data = {
