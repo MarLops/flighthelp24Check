@@ -44,7 +44,7 @@ class Flightera:
             }
             
             payload = ""
-            response = requests.request("GET", url, data=payload,  headers=headersList,proxies=proxies,timeout=30)
+            response = requests.request("GET", url, data=payload,  headers=headersList,proxies=proxies,timeout=30, verify=False)
             logging.info(f'Status response {response.status_code}')
             soup = BeautifulSoup(response.content, "html.parser")
             element_title = soup.find(class_="text-xl")
