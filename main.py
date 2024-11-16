@@ -39,12 +39,12 @@ class Flightera:
             }
 
             proxies = {
-                "http": "http://45.77.201.91:3128",  # Replace with a working free proxy
-                "https": "http://45.77.201.91:3128", # Replace with a working free proxy
+                "http": "http://52.73.224.54:3128",  # Replace with a working free proxy
+                "https": "http://52.73.224.54:3128", # Replace with a working free proxy
             }
             
             payload = ""
-            response = requests.request("GET", url, data=payload,  headers=headersList)
+            response = requests.request("GET", url, data=payload,  headers=headersList,proxies=proxies,timeout=30)
             logging.info(f'Status response {response.status_code}')
             soup = BeautifulSoup(response.content, "html.parser")
             element_title = soup.find(class_="text-xl")
